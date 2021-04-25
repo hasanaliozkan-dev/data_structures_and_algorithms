@@ -1,0 +1,59 @@
+Lower bound for comparison-based sorting
+
+Any comparison-based sorting method (a method that only
+compares elements and does not use any other properties
+of the elements) must make at least cnlogn comparisons
+in the worst case to sort an n-element array, for some
+constant c > 0.
+
+Proof:
+
+There are n! = n(n-1)(n-2)...3 2 1 distinct permutations
+of an array of length n, assuming no duplicates.
+
+log(n!) > cnlogn for some constant c > 0.  This is because
+
+n!  =  n(n-1)(n-2)...3 2 1 
+>=  n(n-1)(n-2)...(n/2 + 2)(n/2 + 1)
+>=  (n/2)^(n/2)
+
+so
+
+log (n!)  >=  log ((n/2)^(n/2))
+=  n/2 log (n/2)
+=  n/2 log n - n/2 log 2
+=  1/2 (nlogn - n)
+>  1/3 nlogn  for n > 8.
+
+Consider any comparison-based sorting method applied to an
+input array containing the elements 1,2,3,...,n in some order.
+Think of the computation as a tree.  The computation starts
+out at the root of the tree.  It will continue along the same
+computation path deterministically until it compares two elements,
+which may causes the computation to branch into two different
+computation paths, depending on the result of the comparison.
+Each of those paths continues on until it makes another comparison,
+which may cause it to branch again (different paths do not need
+to make the same sequence of comparisons).  It continues down
+some path in the tree in this fashion; the path that it takes
+depends on the results of the comparisons along that path.  When
+the computation halts, that is a leaf of the tree, and it has
+sorted the array at that point.
+
+A comparison is the only thing that can cause it to branch, since
+it cannot otherwise look at the elements or use any other property
+of them except their relative order.  In particular, if all the
+comparisons give the same answer, then it will take the same path.
+Thus for two different input permutations, the computation must
+split at some point and take two different paths; if it took the
+same path for both of them, it would have swapped the elements
+in the same way, and one of the output arrays would be wrong.
+
+Thus there must be at least n! different leaves of the computation
+tree, at least one for each input permutation.  But to have this
+many leaves, the tree must be of height at least log (n!) > cnlogn,
+since a binary tree of height h has at most 2^(h+1) - 1 leaves.
+Since the tree must be of height at least cnlogn, it must have
+a path of at least this length.
+
+
